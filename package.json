@@ -10,7 +10,8 @@
     "typecheck": "tsc --noEmit",
     "ingest": "tsx scripts/ingest-docs.ts",
     "eval:docs": "tsx scripts/eval-docs-chat.ts",
-    "check:mdx": "tsx scripts/check-mdx.ts"
+    "check:mdx": "tsx scripts/check-mdx.ts",
+    "seed:dashboard": "tsx scripts/seed-dashboard.ts"
   },
   "dependencies": {
     "@ai-sdk/anthropic": "^4.0.90",
@@ -22,6 +23,7 @@
     "react": "~19.1.2",
     "react-dom": "~19.1.2",
     "react-markdown": "^10.1.0",
+    "recharts": "^3.10.1",
     "remark-gfm": "^4.0.1",
     "zod": "^4.6.7"
   },
