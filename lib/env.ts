@@ -1,11 +1,14 @@
 import { z } from "zod";
 
+// An empty line like `KEY=` in .env.local means "not set".
+const optional = <T extends z.ZodTypeAny>(t: T) => z.preprocess((v) => (v === "" ? undefined : v), t.optional());
+
 const schema = z.object({
   NEXT_PUBLIC_SUPABASE_URL: z.string().url(),
   SUPABASE_SERVICE_ROLE_KEY: z.string().min(1),
   OPENAI_API_KEY: z.string().min(1),
   // Optional so indexing (OpenAI embeddings) can run first; Claude calls fail clearly without it.
-  ANTHROPIC_API_KEY: z.string().min(1).optional(),
+  ANTHROPIC_API_KEY: optional(z.string().min(1)),
   AI_PROVIDER: z.enum(["openai", "anthropic"]).default("anthropic"),
   OPENAI_CHAT_MODEL: z.string().default("gpt-5-mini"),
   ANTHROPIC_CHAT_MODEL: z.string().default("claude-haiku-5-5"),
@@ -13,9 +16,9 @@ const schema = z.object({
   RATE_LIMIT_PER_HOUR: z.coerce.number().int().positive().default(15),
   DAILY_COST_CAP_USD: z.coerce.number().positive().default(0.3),
   IP_HASH_SALT: z.string().min(8),
-  CRON_SECRET: z.string().min(16).optional(),
+  CRON_SECRET: optional(z.string().min(16)),
   // Only the lead agent demo needs it.
-  HUBSPOT_ACCESS_TOKEN: z.string().min(10).optional(),
+  HUBSPOT_ACCESS_TOKEN: optional(z.string().min(10)),
 });
 
 export type Env = z.infer<typeof schema>;
