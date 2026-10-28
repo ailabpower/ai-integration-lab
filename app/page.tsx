@@ -11,13 +11,13 @@ const DEMOS = [
     href: "/dashboard",
     title: "AI Analyst in an existing dashboard",
     body: "Ask your sales data questions in plain English and get charts, without rewriting the dashboard.",
-    status: "soon",
+    status: "live",
   },
   {
     href: "/lead-agent",
     title: "Lead intake agent → CRM",
     body: "Turns contact forms and emails into scored, deduplicated HubSpot records.",
-    status: "soon",
+    status: "live",
   },
 ] as const;
 

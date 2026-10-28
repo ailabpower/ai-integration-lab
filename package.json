@@ -12,7 +12,9 @@
     "eval:docs": "tsx scripts/eval-docs-chat.ts",
     "check:mdx": "tsx scripts/check-mdx.ts",
     "seed:dashboard": "tsx scripts/seed-dashboard.ts",
-    "eval:dashboard": "tsx scripts/eval-dashboard.ts"
+    "eval:dashboard": "tsx scripts/eval-dashboard.ts",
+    "setup:hubspot": "tsx scripts/setup-hubspot.ts",
+    "eval:leads": "tsx scripts/eval-lead-agent.ts"
   },
   "dependencies": {
     "@ai-sdk/anthropic": "^4.0.90",

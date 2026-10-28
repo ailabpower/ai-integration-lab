@@ -13,6 +13,8 @@ const schema = z.object({
   DAILY_COST_CAP_USD: z.coerce.number().positive().default(0.3),
   IP_HASH_SALT: z.string().min(8),
   CRON_SECRET: z.string().min(16).optional(),
+  // Only the lead agent demo needs it.
+  HUBSPOT_ACCESS_TOKEN: z.string().min(10).optional(),
 });
 
 export type Env = z.infer<typeof schema>;
