@@ -4,7 +4,8 @@ const schema = z.object({
   NEXT_PUBLIC_SUPABASE_URL: z.string().url(),
   SUPABASE_SERVICE_ROLE_KEY: z.string().min(1),
   OPENAI_API_KEY: z.string().min(1),
-  ANTHROPIC_API_KEY: z.string().min(1),
+  // Optional so indexing (OpenAI embeddings) can run first; Claude calls fail clearly without it.
+  ANTHROPIC_API_KEY: z.string().min(1).optional(),
   AI_PROVIDER: z.enum(["openai", "anthropic"]).default("anthropic"),
   OPENAI_CHAT_MODEL: z.string().default("gpt-5-mini"),
   ANTHROPIC_CHAT_MODEL: z.string().default("claude-haiku-5-5"),

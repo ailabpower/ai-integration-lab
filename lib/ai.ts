@@ -17,6 +17,7 @@ export function chatModel(provider: Provider) {
     const modelId = e.OPENAI_CHAT_MODEL;
     return { modelId, model: createOpenAI({ apiKey: e.OPENAI_API_KEY })(modelId) };
   }
+  if (!e.ANTHROPIC_API_KEY) throw new Error("ANTHROPIC_API_KEY is not set");
   const modelId = e.ANTHROPIC_CHAT_MODEL;
   return { modelId, model: createAnthropic({ apiKey: e.ANTHROPIC_API_KEY })(modelId) };
 }
