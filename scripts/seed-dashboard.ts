@@ -1,6 +1,6 @@
 // Generates a realistic, deterministic e-commerce dataset for the dashboard demo (12 months up to today).
 // Planted on purpose, so the AI analyst has something to find:
-//   - Electronics revenue collapses for one week, about 9 weeks ago
+//   - Electronics revenue collapses in the week of Monday 2026-08-24
 //   - "Aurora Wireless Earbuds" has a much higher return rate than everything else
 //   - November/December seasonality and a Black Friday spike
 // Usage: npm run seed:dashboard            (writes to Supabase, replacing existing demo data)
@@ -54,12 +54,8 @@ export function generate(today = new Date()) {
     return { id: i + 1, name: `${pick(FIRST)} ${pick(LAST)}`, country: pick(COUNTRIES), segment: rand() < 0.18 ? "business" : "consumer", created_at: t };
   }).sort((a, b) => a.created_at - b.created_at).map((c, i) => ({ ...c, id: i + 1 }));
 
-  // Anomaly week: the Monday about 9 weeks before today.
-  const anomalyStart = (() => {
-    const d = new Date(end - 63 * DAY);
-    const back = (d.getUTCDay() + 6) % 7;
-    return d.getTime() - back * DAY;
-  })();
+  // Anomaly week: fixed, so the demo's suggested question ("the week of August 24") stays true.
+  const anomalyStart = Date.UTC(2026, 7, 24);
   const anomalyEnd = anomalyStart + 7 * DAY;
 
   const categories = Object.keys(CATALOG);

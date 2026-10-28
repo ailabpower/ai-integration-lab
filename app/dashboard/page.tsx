@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { AskPanel } from "@/components/dashboard/ask-panel";
 import { Chart } from "@/components/dashboard/charts";
+import { WeeklySummary } from "@/components/dashboard/weekly-summary";
 import { alignStart, kpis, lastNDays, returnsRate, revenueOverTime, salesByCategory, topProducts, type Kpis } from "@/lib/dashboard/queries";
 
 export const metadata: Metadata = { title: "Store dashboard · AI Integration Lab" };
@@ -48,14 +50,19 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
           <h1 className="text-xl font-semibold">Northwind Goods · Store dashboard</h1>
           <p className="text-xs text-[var(--muted)]">Sample e-commerce data (synthetic).</p>
         </div>
-        <nav className="flex gap-1 text-sm" aria-label="Date range">
-          {Object.keys(RANGES).map((k) => (
-            <Link key={k} href={`/dashboard?range=${k}`} className={`rounded-md px-3 py-1 ${k === String(days) ? "bg-[var(--fg)] text-[var(--bg)]" : "text-[var(--muted)] hover:text-[var(--fg)]"}`}>
-              {k === "365" ? "12 months" : `${k} days`}
-            </Link>
-          ))}
-        </nav>
+        <div className="flex flex-wrap items-center gap-3">
+          <AskPanel />
+          <nav className="flex gap-1 text-sm" aria-label="Date range">
+            {Object.keys(RANGES).map((k) => (
+              <Link key={k} href={`/dashboard?range=${k}`} className={`rounded-md px-3 py-1 ${k === String(days) ? "bg-[var(--fg)] text-[var(--bg)]" : "text-[var(--muted)] hover:text-[var(--fg)]"}`}>
+                {k === "365" ? "12 months" : `${k} days`}
+              </Link>
+            ))}
+          </nav>
+        </div>
       </header>
+
+      <WeeklySummary />
 
       <section className="mt-6 grid grid-cols-2 gap-3 md:grid-cols-4">
         <KpiCard label="Revenue" value={usd(now.revenue)} now={now} prev={prev} field="revenue" />
