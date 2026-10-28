@@ -33,7 +33,7 @@ create table if not exists shop_order_items (
 );
 
 -- One row per order line, with everything the reports need.
-create or replace view shop_sales as
+create or replace view shop_sales with (security_invoker = on) as
 select
   o.id as order_id,
   o.created_at,
@@ -149,10 +149,10 @@ alter table shop_products enable row level security;
 alter table shop_orders enable row level security;
 alter table shop_order_items enable row level security;
 alter table dash_ai_summaries enable row level security;
-revoke all on shop_sales from anon, authenticated;
-revoke execute on function dash_kpis(date, date) from anon, authenticated;
-revoke execute on function dash_revenue_over_time(date, date, text, text) from anon, authenticated;
-revoke execute on function dash_top_products(date, date, text, int) from anon, authenticated;
-revoke execute on function dash_sales_by_category(date, date) from anon, authenticated;
-revoke execute on function dash_customer_stats(date, date) from anon, authenticated;
-revoke execute on function dash_returns_rate(date, date, text) from anon, authenticated;
+revoke all on shop_sales from public, anon, authenticated;
+revoke execute on function dash_kpis(date, date) from public, anon, authenticated;
+revoke execute on function dash_revenue_over_time(date, date, text, text) from public, anon, authenticated;
+revoke execute on function dash_top_products(date, date, text, int) from public, anon, authenticated;
+revoke execute on function dash_sales_by_category(date, date) from public, anon, authenticated;
+revoke execute on function dash_customer_stats(date, date) from public, anon, authenticated;
+revoke execute on function dash_returns_rate(date, date, text) from public, anon, authenticated;

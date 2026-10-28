@@ -146,6 +146,6 @@ alter table feedback enable row level security;
 alter table doc_chunks enable row level security;
 
 -- Functions are server-only too.
-revoke execute on function demo_metrics(int) from anon, authenticated;
-revoke execute on function guard_stats(text, text) from anon, authenticated;
-revoke execute on function match_docs(vector, text, int) from anon, authenticated;
+revoke execute on function demo_metrics(int) from public, anon, authenticated;
+revoke execute on function guard_stats(text, text) from public, anon, authenticated;
+revoke execute on function match_docs(vector, text, int) from public, anon, authenticated;
