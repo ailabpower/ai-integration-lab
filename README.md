@@ -1,36 +1,39 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# AI Integration Lab
 
-## Getting Started
+Three working examples of AI integrated into web apps, each switchable between **OpenAI and Claude**, with **real latency and cost per request** measured on every call.
 
-First, run the development server:
+| Demo | What it shows | Status |
+|---|---|---|
+| Docs Assistant (`/docs-chat`) | RAG over product documentation (public Supabase Auth + Database guides), hybrid search, answers with sources, refuses when the docs don't cover it | live |
+| AI Analyst in an existing dashboard | Natural-language questions over sales data via typed, read-only tool calls | in progress |
+| Lead intake agent → CRM | Forms and emails become scored, deduplicated HubSpot records | in progress |
+
+Demo projects on public or synthetic data. The docs assistant is an unofficial demo and is not affiliated with Supabase.
+
+## Stack
+
+Next.js (App Router, TypeScript) · Vercel AI SDK · OpenAI + Anthropic · Supabase Postgres + pgvector · Vercel
+
+## How the numbers are measured
+
+Every user-visible request writes one row to `ai_requests` (provider, model, tokens, cost, total latency, time to first token). `/metrics` shows p50/p95 latency and cost per request per demo for the last 7 days. Prices per model live in `lib/pricing.ts`.
+
+## Docs Assistant: how it works
+
+1. `npm run ingest` sparse-clones the Supabase docs, strips MDX components, splits pages by heading into ~700-token chunks with deep links, embeds them (`text-embedding-3-small`) and stores them in `doc_chunks`. Re-runs only re-embed changed pages.
+2. A question is embedded and searched with `match_docs`: vector similarity and Postgres full-text search merged with Reciprocal Rank Fusion, max 2 chunks per page.
+3. If nothing is relevant enough, the API answers "not in the docs" without calling the LLM (zero generation cost).
+4. Otherwise the model answers only from the retrieved sources, citing them as [1], [2]; sources stream to the UI as clickable links.
+5. Public demo protection: per-IP hourly limit and a global daily spend cap.
+
+`npm run eval:docs` runs 25 questions (20 answerable, 5 out of scope) on both providers and writes `docs/eval-docs-chat.md`.
+
+## Run locally
 
 ```bash
+cp .env.example .env.local     # fill in the keys
+npm install
+# apply supabase/migrations/*.sql to your Supabase project (SQL editor or Supabase CLI)
+npm run ingest
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.

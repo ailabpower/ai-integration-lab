@@ -6,22 +6,39 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "typecheck": "tsc --noEmit",
+    "ingest": "tsx scripts/ingest-docs.ts",
+    "eval:docs": "tsx scripts/eval-docs-chat.ts",
+    "check:mdx": "tsx scripts/check-mdx.ts"
   },
   "dependencies": {
-    "react": "19.1.0",
-    "react-dom": "19.1.0",
-    "next": "15.5.28"
+    "@ai-sdk/anthropic": "^4.0.90",
+    "@ai-sdk/openai": "^4.0.104",
+    "@ai-sdk/react": "^4.0.159",
+    "@supabase/supabase-js": "^2.118.0",
+    "ai": "^7.0.155",
+    "next": "15.5.28",
+    "react": "~19.1.2",
+    "react-dom": "~19.1.2",
+    "react-markdown": "^10.1.0",
+    "remark-gfm": "^4.0.1",
+    "zod": "^4.6.7"
   },
   "devDependencies": {
-    "typescript": "^5",
+    "@eslint/eslintrc": "^3",
+    "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "@tailwindcss/postcss": "^4",
-    "tailwindcss": "^4",
+    "dotenv": "^18.0.9",
     "eslint": "^9",
     "eslint-config-next": "15.5.28",
-    "@eslint/eslintrc": "^3"
+    "tailwindcss": "^4",
+    "tsx": "^4.23.15",
+    "typescript": "^5"
+  },
+  "engines": {
+    "node": ">=20"
   }
 }
